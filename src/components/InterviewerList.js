@@ -8,8 +8,8 @@ export default function InterviewList(props) {
       key={interviewer.id}
       name={interviewer.name}
       avatar={interviewer.avatar}
-      selected={props.interviewer === interviewer.id}
-      setInterviewer={(event) => props.setInterviewer(interviewer.id)} />
+      selected={props.value === interviewer.id}
+      setInterviewer={(event) => props.onChange(interviewer.id)} />
   });
   return (
     <section className="interviewers">
