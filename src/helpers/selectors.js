@@ -1,5 +1,4 @@
-
-export function getAppointmentsForDay(state, day) {
+function getAppointmentsForDay(state, day) {
   let dailyAptArr = [];
   let validDay = false;
   let aptArray;
@@ -22,4 +21,21 @@ export function getAppointmentsForDay(state, day) {
     }
   }
   return dailyAptArr;
-}
+};
+
+function getInterview(state, interview) {
+  let aptObj = {...interview};
+  let interviewerId = interview && interview.interviewer;
+  
+  if (!interview) {
+    return null;
+  }
+  
+  for (const interviewerObj in state.interviewers) {
+    if (Number(interviewerObj) === interviewerId) {
+      aptObj.interviewer = state.interviewers[interviewerObj];
+    }
+  }
+  return aptObj;
+};
+export {getAppointmentsForDay, getInterview};
