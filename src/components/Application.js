@@ -14,18 +14,18 @@ export default function Application(props) {
     interviewers: {}
   })
   const setDay = day => setState({ ...state, day });
-  // const setDays = days => setState({...state, days});
-  // const setDays = days => setState(prev => ({...prev, days}));
+  // const setDays = days => setState({...state, days}); //BEFORE: causing warning
+  // const setDays = days => setState(prev => ({...prev, days}));  //NO warning
+  // useEffect(() => {
+  //     axios.get('/api/days').then(res => setDays( res.data))
+  //   }, [])
   const dailyAppointments = getAppointmentsForDay(state, state.day);
   const schedule = dailyAppointments.map(appointment => {
     const interview = getInterview(state, appointment.interview);
     return (
-    <Appointment key={appointment.id} {...appointment} />);
+    <Appointment key={appointment.id} {...appointment} interview={interview}/>);
   })
 
-  // useEffect(() => {
-  //     axios.get('/api/days').then(res => setDays( res.data))
-  //   }, [])
 
   useEffect(() => {
     Promise.all([
