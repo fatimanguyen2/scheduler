@@ -8,8 +8,9 @@ function useVisualMode(initial) {
     setMode(newMode);
     if (replace) {
       let newHistory = [...history];
-      // newHistory.pop().push(newMode); WHY WHY WHY WHY!?!?!??!?!?!?!??!!??!!?!?!?!?
-      newHistory.splice(-1, 1, newMode)
+      // newHistory.splice(-1, 1, newMode)
+      newHistory = newHistory.slice(0, -1);
+      newHistory = [...newHistory, newMode];
       setHistory(newHistory);  
     } else {
       setHistory([...history, newMode])
@@ -17,12 +18,21 @@ function useVisualMode(initial) {
   };
 
   const back = () => {
-    const pureArray = [...history];
-    if (pureArray.length > 1) {
-      pureArray.pop();
+
+    // Using methods that mutate arrays
+    // const pureArray = [...history];
+    // if (pureArray.length > 1) {
+    //   pureArray.pop();
+    // }
+    // setHistory(pureArray);
+    // setMode(pureArray[pureArray.length - 1]);
+
+    let newHistory = [...history];
+    if (newHistory.length > 1 ) {
+      newHistory = newHistory.slice(0, -1);
     }
-    setHistory(pureArray);
-    setMode(pureArray[pureArray.length - 1]);
+    setHistory(newHistory);
+    setMode(newHistory[newHistory.length - 1]);
   };
 
   return {mode, transition, back};
