@@ -8,7 +8,7 @@ function useVisualMode(initial) {
     setMode(newMode);
     if (replace) {
       let newHistory = [...history];
-      // newHistory.pop().push(newMode); WHY WHY WHY WHY
+      // newHistory.pop().push(newMode); WHY WHY WHY WHY!?!?!??!?!?!?!??!!??!!?!?!?!?
       newHistory.splice(-1, 1, newMode)
       setHistory(newHistory);  
     } else {
