@@ -6,19 +6,16 @@ function useVisualMode(initial) {
 
   const transition = (newMode, replace = false) => {
     setMode(newMode);
-    if (replace) {
-      let newHistory = [...history];
-      // newHistory.splice(-1, 1, newMode)
-      newHistory = newHistory.slice(0, -1);
-      newHistory = [...newHistory, newMode];
-      setHistory(newHistory);  
-    } else {
-      setHistory([...history, newMode])
-    }
+    setHistory(prev => {
+      let newHistory = [...prev];
+      if (replace) {
+        newHistory = newHistory.slice(0, -1);
+      }
+      return newHistory = [...newHistory, newMode];
+    });
   };
 
   const back = () => {
-
     // Using methods that mutate arrays
     // const pureArray = [...history];
     // if (pureArray.length > 1) {
@@ -27,12 +24,14 @@ function useVisualMode(initial) {
     // setHistory(pureArray);
     // setMode(pureArray[pureArray.length - 1]);
 
-    let newHistory = [...history];
-    if (newHistory.length > 1 ) {
-      newHistory = newHistory.slice(0, -1);
-    }
-    setHistory(newHistory);
-    setMode(newHistory[newHistory.length - 1]);
+    setHistory(prev => {
+      let newHistory = [...prev];
+      if (newHistory.length > 1 ) {
+        newHistory = newHistory.slice(0, -1);
+      }
+      setMode(newHistory[newHistory.length - 1]);
+      return newHistory;
+    })
   };
 
   return {mode, transition, back};
