@@ -14,17 +14,13 @@ export default function Application(props) {
     interviewers: {}
   })
   const setDay = day => setState({ ...state, day });
-  // const setDays = days => setState({...state, days}); //BEFORE: causing warning
-  // const setDays = days => setState(prev => ({...prev, days}));  //NO warning
-  // useEffect(() => {
-  //     axios.get('/api/days').then(res => setDays( res.data))
-  //   }, [])
+
   const dailyAppointments = getAppointmentsForDay(state, state.day);
   const dailyInterviewers = getInterviewersForDay(state, state.day);
   const schedule = dailyAppointments.map(appointment => {
     const interview = getInterview(state, appointment.interview);
     return (
-      <Appointment key={appointment.id} {...appointment} interview={interview} interviewers={dailyInterviewers} bookInterview={bookInterview} />);
+      <Appointment key={appointment.id} {...appointment} interview={interview} interviewers={dailyInterviewers} bookInterview={bookInterview} delete={cancelInterview} />);
   })
   function bookInterview(id, interview) {
     const appointment = {
@@ -38,9 +34,18 @@ export default function Application(props) {
     };
     return axios.put(`/api/appointments/${id}`, appointment)
       .then(() => {
-        setState(prev => ({...prev, appointments}));
+        setState(prev => ({ ...prev, appointments }));
       })
   }
+
+  function cancelInterview(id) {
+    const appointment = { ...state.appointments[id], interview: null };
+    const appointments = { ...state.appointments, [id]: appointment };
+    return axios.delete(`/api/appointments/${id}`, appointment)
+      .then(() => {
+        setState(prev => ({ ...prev, appointments }));
+      })
+  };
 
   useEffect(() => {
     Promise.all([

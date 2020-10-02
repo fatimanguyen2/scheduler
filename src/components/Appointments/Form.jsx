@@ -5,7 +5,7 @@ import InterviewerList from 'components/InterviewerList';
 export default function Form(props) {
   const [name, setName] = useState(props.name || '');
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
-
+  console.log(name)
   const reset = () => {
     setName('');
     setInterviewer(null);
@@ -22,6 +22,7 @@ export default function Form(props) {
           <input
             className="appointment__create-input text--semi-bold"
             name={name}
+            value={name}
             type="text"
             placeholder={props.name ? props.name : "Enter Student Name"}
             onChange={event => setName(event.target.value)}
