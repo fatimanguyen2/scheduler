@@ -23,7 +23,6 @@ function useVisualMode(initial) {
     // }
     // setHistory(pureArray);
     // setMode(pureArray[pureArray.length - 1]);
-
     setHistory(prev => {
       let newHistory = [...prev];
       if (newHistory.length > 1 ) {
