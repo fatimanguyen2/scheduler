@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState } from 'react';
 
 function useVisualMode(initial) {
   const [mode, setMode] = useState(initial);
@@ -25,7 +25,7 @@ function useVisualMode(initial) {
     // setMode(pureArray[pureArray.length - 1]);
     setHistory(prev => {
       let newHistory = [...prev];
-      if (newHistory.length > 1 ) {
+      if (newHistory.length > 1) {
         newHistory = newHistory.slice(0, -1);
       }
       setMode(newHistory[newHistory.length - 1]);
@@ -33,7 +33,7 @@ function useVisualMode(initial) {
     })
   };
 
-  return {mode, transition, back};
+  return { mode, transition, back };
 }
 
 export default useVisualMode;
