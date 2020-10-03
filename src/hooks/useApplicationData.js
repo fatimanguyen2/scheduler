@@ -5,7 +5,15 @@ const useApplicationData = () => {
   const SET_DAY = "SET_DAY";
   const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
   const SET_INTERVIEW = "SET_INTERVIEW";
-  const SET_SPOTS = 'SET_SPOTS'
+  
+  const updateSpots = initialState => {
+    const state = { ...initialState };
+    const dayObj = state.days.find(dayObj => dayObj.name === state.day);
+    const appointmentsKeys = dayObj.appointments;
+    const emptyApt = appointmentsKeys.filter(key => !state.appointments[key].interview)
+    dayObj.spots = emptyApt.length;
+    return state.days
+  }
 
   const reducer = (state, action) => {
     switch (action.type) {
@@ -14,9 +22,7 @@ const useApplicationData = () => {
       case SET_APPLICATION_DATA:
         return { ...state, days: action.value[0], appointments: action.value[1], interviewers: action.value[2] };
       case SET_INTERVIEW:
-        return { ...state, appointments: action.value };
-      case SET_SPOTS:
-        return {...state, days: action.value}
+        return { ...state, appointments: action.value , days: updateSpots(state)};
       default:
         throw new Error(
           `Tried to reduce with unsupported action type: ${action.type}`
@@ -48,15 +54,6 @@ const useApplicationData = () => {
       })
   }, []);
 
-  const updateSpots = initialState => {
-    const state = { ...initialState };
-    const dayObj = state.days.find(dayObj => dayObj.name === state.day);
-    const appointmentsKeys = dayObj.appointments;
-    const emptyApt = appointmentsKeys.filter(key => !state.appointments[key].interview)
-    dayObj.spots = emptyApt.length;
-    return state.days
-  }
-
   function bookInterview(id, interview) {
     const appointment = {
       ...state.appointments[id],
@@ -71,9 +68,8 @@ const useApplicationData = () => {
     return axios.put(`/api/appointments/${id}`, appointment)
       .then(() => {
         // setState(prev => ({ ...prev, appointments }));
-        dispatch({ type: SET_INTERVIEW, value: appointments })
+        dispatch({ type: SET_INTERVIEW, value: appointments})
         // setState(prev => ({ ...prev, days: updateSpots(prev) }))
-        // dispatch({type: SET_SPOTS, value: updateSpots(state)})
       })
   }
 
