@@ -4,6 +4,7 @@ function useVisualMode(initial) {
   const [mode, setMode] = useState(initial);
   const [history, setHistory] = useState([initial]);
 
+  // changes mode
   const transition = (newMode, replace = false) => {
     setMode(newMode);
     setHistory(prev => {
@@ -15,14 +16,8 @@ function useVisualMode(initial) {
     });
   };
 
+// brings user back to previous mode
   const back = () => {
-    // Using methods that mutate arrays
-    // const pureArray = [...history];
-    // if (pureArray.length > 1) {
-    //   pureArray.pop();
-    // }
-    // setHistory(pureArray);
-    // setMode(pureArray[pureArray.length - 1]);
     setHistory(prev => {
       let newHistory = [...prev];
       if (newHistory.length > 1) {

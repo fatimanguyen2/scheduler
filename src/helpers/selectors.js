@@ -8,23 +8,9 @@ const getInterviewersForDay = (state, day) => {
   return dayObj ? dayObj.interviewers.map(key => state.interviewers[key]) : []; //obtain appt keys for current day and return array of appt details
 };
 
-function getInterview(state, interview) {
-  let aptObj = { ...interview };
-  let interviewerId = interview && interview.interviewer;
-
-  if (!interview) {
-    return null;
-  }
-
-  for (const interviewerObj in state.interviewers) {
-    if (Number(interviewerObj) === interviewerId) {
-      aptObj.interviewer = state.interviewers[interviewerObj];
-    }
-  }
-  return aptObj;
+const getInterview = (state, interview) => {
+  let interviewerId = interview && interview.interviewer; //if interview not null, get interviewer id
+  return interview? {...interview, interviewer: state.interviewers[interviewerId]}: null;
 };
 
-// const getInterview = (state, appointment) => {
-//   const aptWithInterviewerDetails = !appointment? null : {... interview}
-// };
 export { getAppointmentsForDay, getInterviewersForDay, getInterview };

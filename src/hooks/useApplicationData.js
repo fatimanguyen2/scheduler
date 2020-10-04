@@ -5,7 +5,8 @@ const useApplicationData = () => {
   const SET_DAY = "SET_DAY";
   const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
   const SET_INTERVIEW = "SET_INTERVIEW";
-  
+
+// Add/remove daily remaining spots if book/delete an appointment
   const updateSpots = initialState => {
     const state = { ...initialState };
     const dayObj = state.days.find(dayObj => dayObj.name === state.day);
@@ -37,16 +38,16 @@ const useApplicationData = () => {
     interviewers: {}
   })
 
-  // const setDay = day => setState(prev => ({ ...prev, day }));
+  // Set the selected day 
   const setDay = day => dispatch({ type: SET_DAY, value: day });
 
+// API calls to populate page
   useEffect(() => {
     Promise.all([
       axios.get('/api/days'),
       axios.get('/api/appointments'),
       axios.get('/api/interviewers')
     ]).then(all => {
-      // setState(prev => ({ ...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data }))
       dispatch({ type: SET_APPLICATION_DATA, value: [all[0].data, all[1].data, all[2].data] })
     })
       .catch(err => {
@@ -54,12 +55,12 @@ const useApplicationData = () => {
       })
   }, []);
 
-  function bookInterview(id, interview) {
+
+  const bookInterview = (id, interview) => {
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
     };
-
     const appointments = {
       ...state.appointments,
       [id]: appointment
@@ -67,22 +68,19 @@ const useApplicationData = () => {
 
     return axios.put(`/api/appointments/${id}`, appointment)
       .then(() => {
-        // setState(prev => ({ ...prev, appointments }));
         dispatch({ type: SET_INTERVIEW, value: appointments})
-        // setState(prev => ({ ...prev, days: updateSpots(prev) }))
       })
   }
 
-  function cancelInterview(id) {
+  const cancelInterview = id => {
     const appointment = { ...state.appointments[id], interview: null };
     const appointments = { ...state.appointments, [id]: appointment };
     return axios.delete(`/api/appointments/${id}`, appointment)
       .then(() => {
-        // setState(prev => ({ ...prev, appointments }));
         dispatch({ type: SET_INTERVIEW, value: appointments })
-        // setState(prev => ({ ...prev, days: updateSpots(prev) }));
       })
   };
+  
   return { state, setDay, bookInterview, cancelInterview }
 }
 
