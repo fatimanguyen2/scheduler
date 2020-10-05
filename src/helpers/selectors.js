@@ -14,3 +14,23 @@ const getInterview = (state, interview) => {
 };
 
 export { getAppointmentsForDay, getInterviewersForDay, getInterview };
+
+// .then(() => {
+  //   webSocket.onmessage = function (event) {
+  //     const serverMessage = JSON.parse(event.data);
+  //     if (serverMessage.type === "SET_INTERVIEW") {
+  //       console.log(serverMessage)
+  //       const appointment = {
+  //         ...state.appointments[serverMessage.id],
+  //         interview: getInterview(state, serverMessage.interview)
+  //       };
+  //       console.log('appoint', appointment)
+  //       const appointments = {
+  //         ...state.appointments,
+  //         [serverMessage.id]: appointment
+  //       };
+  //       console.log('before dispatching', appointment)
+  //       dispatch({ type: SET_INTERVIEW, value: appointments });
+  //     }
+  //   }
+  // })
