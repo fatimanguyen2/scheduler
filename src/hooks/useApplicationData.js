@@ -86,7 +86,7 @@ const useApplicationData = () => {
       ...state.appointments,
       [id]: appointment
     };
-
+    
     return axios.put(`/api/appointments/${id}`, appointment)
       .then(() => {
         dispatch({ type: SET_INTERVIEW, value: appointments })

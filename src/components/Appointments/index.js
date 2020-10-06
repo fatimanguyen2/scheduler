@@ -30,7 +30,7 @@ export default function Appointment(props) {
     transition(SAVING);
     props.bookInterview(props.id, interview)
       .then(() => { transition(SHOW) })
-      .catch(err => transition(ERROR_SAVE, true));
+      .catch(() => transition(ERROR_SAVE, true));
   };
 
   const deleteAppt = () => {
@@ -58,7 +58,7 @@ export default function Appointment(props) {
   return (
     <Fragment>
       <Header time={props.time} />
-      <article className="appointment">
+      <article className="appointment" data-testid="appointment">
         {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
         {mode === SHOW && props.interview && (
           <Show
