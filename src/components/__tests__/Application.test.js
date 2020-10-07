@@ -34,7 +34,7 @@ describe('Application', () => {
     await waitForElement(() => getByText(container, 'Archie Cohen')); //loads page after mock API call
 
     const appointments = getAllByTestId(container, "appointment");
-    const appointment = appointments[0];
+    const appointment = appointments[0]; //empty apt
 
     fireEvent.click(getByAltText(appointment, 'Add')); //click on add button when appointment mode is EMPTY
 
@@ -53,13 +53,8 @@ describe('Application', () => {
     const day = getAllByTestId(container, 'day').find(day =>
       queryByText(day, "Monday")
     );
-    await waitForElement(() => getByText(container, 'no spots remaining'));
-    // expect(getByText(day, 'no spots remaining')).toBeInTheDocument();
-  //   setTimeout(() => {
-  //     console.log(prettyDOM(container)); //not showing?
-  //     expect(getByText(day, 'no spots remaining')).toBeInTheDocument();
-  //   }, 1000)
-  // });
+    expect(getByText(day, 'no spots remaining')).toBeInTheDocument();
+  });
 
   it("loads data, cancels an interview and increases the spots remaining for Monday by 1", async () => {
     const { container } = render(<Application />);
@@ -85,10 +80,7 @@ describe('Application', () => {
     const day = getAllByTestId(container, 'day').find(day =>
       queryByText(day, "Monday")
     );
-
-    setTimeout(() => {
-      expect(getByText(day, '2 spots remaining')).toBeInTheDocument()
-    }, 1000)
+    expect(getByText(day, '2 spots remaining')).toBeInTheDocument()
   });
 
   it("loads data, edits an interview and keeps the spots remaining for Monday the same", async () => {
