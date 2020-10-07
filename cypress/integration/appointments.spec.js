@@ -1,13 +1,13 @@
 /* eslint-disable no-undef */
 describe('Appointments', () => {
   beforeEach(() => {
-    cy.request("GET", '/api/debug/reset')
+    cy.request("GET", '/api/debug/reset');
     cy.visit('/');
     cy.contains("Monday");
 
   });
 
-  xit("should book an interview", () => {
+  it("should book an interview", () => {
 
     cy.get('[alt="Add"]')
       .first()
@@ -26,10 +26,10 @@ describe('Appointments', () => {
 
   });
 
-  xit("should edit an interview", () => {
+  it("should edit an interview", () => {
     cy.get('[alt="Edit"]')
       .first()
-      .click({ force: true })
+      .click({ force: true });
 
     cy.get("[data-testid=student-name-input]").clear().type("Lydia Miller-Jones");
     cy.get('[alt="Tori Malcolm"]')
@@ -44,17 +44,16 @@ describe('Appointments', () => {
 
   it("should cancel an interview", () => {
     cy.get('[alt="Delete"]')
-      .first()
-      .click({ force: true });
+    .first()
+    .click({ force: true });
 
     cy.get('.appointment__actions > :nth-child(2)')
       .click();
 
-    cy.contains("Deleting").should("exist");
-    cy.contains("Deleting").should("not.exist");
-
-    cy.contains(".appointment__card--show", "Archie Cohen")
-      .should("not.exist");
+      cy.contains("Deleting").should("exist");
+      cy.contains("Deleting").should("not.exist");
+    
+      cy.contains(".appointment__card--show", "Archie Cohen")
+        .should("not.exist");
   });
-
 });
