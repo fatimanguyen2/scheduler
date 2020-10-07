@@ -53,13 +53,13 @@ describe('Application', () => {
     const day = getAllByTestId(container, 'day').find(day =>
       queryByText(day, "Monday")
     );
-    // await waitForElement(() => getByText(container, 'no spots remaining'));
+    await waitForElement(() => getByText(container, 'no spots remaining'));
     // expect(getByText(day, 'no spots remaining')).toBeInTheDocument();
-    setTimeout(() => {
-      console.log(debug()) //not showing?
-      expect(getByText(day, 'no spots remaining')).toBeInTheDocument()
-    }, 1000)
-  });
+  //   setTimeout(() => {
+  //     console.log(prettyDOM(container)); //not showing?
+  //     expect(getByText(day, 'no spots remaining')).toBeInTheDocument();
+  //   }, 1000)
+  // });
 
   it("loads data, cancels an interview and increases the spots remaining for Monday by 1", async () => {
     const { container } = render(<Application />);
@@ -145,7 +145,6 @@ describe('Application', () => {
 
     fireEvent.click(getByAltText(appointment, 'Close'))
     expect(getByPlaceholderText(appointment, /enter student name/i)).toBeInTheDocument();
-    console.log(prettyDOM(appointment))
   });
 
   it("shows the delete error when failing to delete an existing appointment", async () => {
