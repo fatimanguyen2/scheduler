@@ -26,7 +26,8 @@ const useApplicationData = () => {
       axios.get('/api/appointments'),
       axios.get('/api/interviewers'),
     ]).then(all => {
-      dispatch({ type: SET_APPLICATION_DATA, value: [all[0].data, all[1].data, all[2].data] })
+      // dispatch({ type: SET_APPLICATION_DATA, value: [all[0].data, all[1].data, all[2].data] })
+      dispatch({ type: SET_APPLICATION_DATA, value: all.map(apiData=> apiData.data) })
     })
       .catch(err => {
         console.log(err)
