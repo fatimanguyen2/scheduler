@@ -52,6 +52,7 @@ const useApplicationData = () => {
         }
       }
     }
+    return webSocket.close();
   }, [state])
 
   // Function gets called to book interview when appointment's save btn is clicked
