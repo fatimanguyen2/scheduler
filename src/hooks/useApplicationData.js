@@ -37,7 +37,7 @@ const useApplicationData = () => {
   useEffect(() => {
     const webSocket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
     webSocket.onopen = () => {
-      webSocket.onmessage = function (event) {
+      webSocket.onmessage = event => {
         const serverMessage = JSON.parse(event.data);
         if (serverMessage.type === "SET_INTERVIEW" && Object.keys(state.appointments).length) {
           const appointment = {
