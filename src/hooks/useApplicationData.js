@@ -54,6 +54,7 @@ const useApplicationData = () => {
     }
   }, [state])
 
+  // Function gets called to book interview when appointment's save btn is clicked
   const bookInterview = (id, interview) => {
     const appointment = {
       ...state.appointments[id],
@@ -64,19 +65,19 @@ const useApplicationData = () => {
       [id]: appointment
     };
 
-
     return axios.put(`/api/appointments/${id}`, appointment)
       .then(() => {
-        dispatch({ type: SET_INTERVIEW, value: appointments })
+        dispatch({ type: SET_INTERVIEW, value: appointments });
       })
   }
 
+// Function gets called to cancel interview when appointment's confirm's btn is clicked
   const cancelInterview = id => {
     const appointment = { ...state.appointments[id], interview: null };
     const appointments = { ...state.appointments, [id]: appointment };
     return axios.delete(`/api/appointments/${id}`, appointment)
       .then(() => {
-        dispatch({ type: SET_INTERVIEW, value: appointments })
+        dispatch({ type: SET_INTERVIEW, value: appointments });
       })
   };
 
