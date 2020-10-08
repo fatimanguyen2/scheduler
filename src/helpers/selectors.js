@@ -1,7 +1,7 @@
 const getAppointmentsForDay = (state, day) => {
   const dayObj = state.days.find(dayObj => dayObj.name === day); //get the right day object in state
   return dayObj ? dayObj.appointments.map(key => state.appointments[key]) : []; //obtain appt keys for current day and return array of appt details
-}
+};
 
 const getInterviewersForDay = (state, day) => {
   const dayObj = state.days.find(dayObj => dayObj.name === day); //get the right day object in state

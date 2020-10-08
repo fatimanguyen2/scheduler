@@ -23,18 +23,19 @@ describe('Application', () => {
   it("defaults to Monday and changes the schedule when a new day is selected", async () => {
     const { getByText, getByAltText } = render(<Application />);
 
-    await waitForElement(() => getByText("Monday"))
-    fireEvent.click(getByText('Tuesday'));
-    expect(getByText("Leopold Silvers")).toBeInTheDocument()
+    await waitForElement(() => getByText("Monday")) //loads page after mock API call
+
+    fireEvent.click(getByText('Tuesday')); //select tuesday
+    expect(getByText("Leopold Silvers")).toBeInTheDocument();
   });
 
   it("loads data, books an interview and reduces the spots remaining for the first day by 1", async () => {
-    const { container, debug } = render(<Application />)
+    const { container, debug } = render(<Application />);
 
     await waitForElement(() => getByText(container, 'Archie Cohen')); //loads page after mock API call
 
     const appointments = getAllByTestId(container, "appointment");
-    const appointment = appointments[0]; //empty apt
+    const appointment = appointments[0]; //select first(empty) apt
 
     fireEvent.click(getByAltText(appointment, 'Add')); //click on add button when appointment mode is EMPTY
 
@@ -45,7 +46,7 @@ describe('Application', () => {
     fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
     fireEvent.click(getByText(appointment, "Save"));
 
-    expect(getByText(appointment, 'Saving')).toBeInTheDocument();
+    expect(getByText(appointment, 'Saving')).toBeInTheDocument(); // appointment mode should be SAVING
 
     // wait to transition to show mode of appointment
     await waitForElement(() => getByText(appointment, "Lydia Miller-Jones"));
@@ -53,6 +54,7 @@ describe('Application', () => {
     const day = getAllByTestId(container, 'day').find(day =>
       queryByText(day, "Monday")
     );
+
     expect(getByText(day, 'no spots remaining')).toBeInTheDocument();
   });
 
@@ -80,7 +82,8 @@ describe('Application', () => {
     const day = getAllByTestId(container, 'day').find(day =>
       queryByText(day, "Monday")
     );
-    expect(getByText(day, '2 spots remaining')).toBeInTheDocument()
+
+    expect(getByText(day, '2 spots remaining')).toBeInTheDocument();
   });
 
   it("loads data, edits an interview and keeps the spots remaining for Monday the same", async () => {
@@ -110,12 +113,13 @@ describe('Application', () => {
     const day = getAllByTestId(container, 'day').find(day =>
       queryByText(day, "Monday")
     );
+
     expect(getByText(day, '1 spot remaining')).toBeInTheDocument();
   });
 
   it("shows the save error when failing to save an appointment", async () => {
     axios.put.mockRejectedValueOnce();
-    const { container } = render(<Application />)
+    const { container } = render(<Application />);
 
     await waitForElement(() => getByText(container, 'Archie Cohen')); //loads page after mock API call
 
@@ -135,13 +139,13 @@ describe('Application', () => {
     await waitForElement(() => getByText(appointment, "Error"));
     expect(getByText(appointment, 'Error')).toBeInTheDocument();
 
-    fireEvent.click(getByAltText(appointment, 'Close'))
+    //Close error and go back to form mode of Form
+    fireEvent.click(getByAltText(appointment, 'Close'));
     expect(getByPlaceholderText(appointment, /enter student name/i)).toBeInTheDocument();
   });
 
   it("shows the delete error when failing to delete an existing appointment", async () => {
     axios.delete.mockRejectedValueOnce();
-
     const { container } = render(<Application />);
 
     await waitForElement(() => getByText(container, "Archie Cohen")); //reload page after mock API call

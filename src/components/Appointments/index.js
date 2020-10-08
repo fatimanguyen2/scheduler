@@ -15,7 +15,7 @@ const CREATE = 'CREATE';
 const SAVING = 'SAVING';
 const CONFIRM = 'CONFIRM';
 const DELETING = 'DELETING';
-const EDIT = 'EDIT'
+const EDIT = 'EDIT';
 const ERROR_SAVE = 'ERROR_SAVE';
 const ERROR_DELETE = 'ERROR_DELETE';
 
@@ -30,7 +30,7 @@ export default function Appointment(props) {
     transition(SAVING);
     props.bookInterview(props.id, interview)
       .then(() => { transition(SHOW) })
-      .catch(err => transition(ERROR_SAVE, true));
+      .catch(() => transition(ERROR_SAVE, true));
   };
 
   const deleteAppt = () => {
@@ -38,7 +38,7 @@ export default function Appointment(props) {
       transition(DELETING, true);
       props.delete(props.id)
         .then(() => transition(EMPTY))
-        .catch(err => transition(ERROR_DELETE, true));
+        .catch(() => transition(ERROR_DELETE, true));
     } else {
       transition(CONFIRM);
     }
@@ -90,4 +90,4 @@ export default function Appointment(props) {
       </article>
     </Fragment>
   );
-}
+};

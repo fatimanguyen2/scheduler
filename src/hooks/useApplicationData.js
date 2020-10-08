@@ -14,34 +14,35 @@ const useApplicationData = () => {
     days: [],
     appointments: {},
     interviewers: {}
-  })
+  });
 
   // Set the selected day 
   const setDay = day => dispatch({ type: SET_DAY, value: day });
 
-  // API calls to populate page and connect to WebSocket
+  // API calls to populate page
   useEffect(() => {
     Promise.all([
       axios.get('/api/days'),
       axios.get('/api/appointments'),
       axios.get('/api/interviewers'),
     ]).then(all => {
-      dispatch({ type: SET_APPLICATION_DATA, value: all.map(apiData=> apiData.data) })
+      dispatch({ type: SET_APPLICATION_DATA, value: all.map(apiData => apiData.data) });
     })
       .catch(err => {
         console.log(err)
-      })
+      });
   }, []);
 
+  // Use webSockets
   useEffect(() => {
     const webSocket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
-    webSocket.onopen = function () {
+    webSocket.onopen = () => {
       webSocket.onmessage = function (event) {
         const serverMessage = JSON.parse(event.data);
         if (serverMessage.type === "SET_INTERVIEW" && Object.keys(state.appointments).length) {
           const appointment = {
             ...state.appointments[serverMessage.id],
-            interview: getInterview(state, serverMessage.interview)
+            interview: serverMessage.interview
           };
           const appointments = {
             ...state.appointments,
@@ -62,11 +63,11 @@ const useApplicationData = () => {
       ...state.appointments,
       [id]: appointment
     };
-  
+
 
     return axios.put(`/api/appointments/${id}`, appointment)
       .then(() => {
-        dispatch({ type: SET_INTERVIEW, value:appointments})
+        dispatch({ type: SET_INTERVIEW, value: appointments })
       })
   }
 
